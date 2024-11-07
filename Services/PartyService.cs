@@ -44,13 +44,21 @@ namespace ProductManagemet.Services
                 partiesQuery = partiesQuery.Where(p => p.PartyName.Contains(searchTerm));
             }
 
+         
             if (!string.IsNullOrWhiteSpace(sortOrder))
             {
-                partiesQuery = sortOrder switch
+                switch (sortOrder)
                 {
-                    "name_desc" => partiesQuery.OrderByDescending(p => p.PartyName),
-                    _ => partiesQuery.OrderBy(p => p.PartyName), 
-                };
+                    case "name_desc":
+                        partiesQuery = partiesQuery.OrderByDescending(p => p.PartyName);
+                        break;
+                    case "name_asc":
+                        partiesQuery = partiesQuery.OrderBy(p => p.PartyName);
+                        break;
+                    default:
+                        break;
+                }
+
             }
 
             return await partiesQuery.ToListAsync();
