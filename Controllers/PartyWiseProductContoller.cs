@@ -114,31 +114,64 @@ namespace ProductManagemet.Controllers
         }
         #endregion
 
-        #region create
-        // GET: partywiseproduct/create
-        [HttpGet("Create")]
-        public async Task<IActionResult> Create()
-        {
+        // #region create
+        // // GET: partywiseproduct/create
+        // [HttpGet("Create")]
+        // public async Task<IActionResult> Create()
+        // {
 
-            ViewBag.Parties = await _partyWiseProduct.GetPartyAsync();
-            ViewBag.Products = await _partyWiseProduct.GetProductAsync();
+        //     ViewBag.Parties = await _partyWiseProduct.GetPartyAsync();
+        //     ViewBag.Products = await _partyWiseProduct.GetProductAsync();
 
-            return View();
-        }
-        [HttpPost("Create")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("PartyId,ProductId")] PartyWiseProduct partyWiseProduct)
-        {
-            if (ModelState.IsValid)
-            {
-                await _partyWiseProduct.AddPartyWiseProductAsync(partyWiseProduct);
-                return RedirectToAction(nameof(Index));
-            }
+        //     return View();
+        // }
+        // [HttpPost("Create")]
+        // [ValidateAntiForgeryToken]
+        // public async Task<IActionResult> Create([Bind("PartyId,ProductId")] PartyWiseProduct partyWiseProduct)
+        // {
+        //     if (ModelState.IsValid)
+        //     {
+        //         await _partyWiseProduct.AddPartyWiseProductAsync(partyWiseProduct);
+        //         return RedirectToAction(nameof(Index));
+        //     }
 
-            ViewBag.Parties = await _partyWiseProduct.GetPartyAsync();
-            ViewBag.Products = await _partyWiseProduct.GetProductAsync();
-            return View(partyWiseProduct);
-        }
-        #endregion
+        //     ViewBag.Parties = await _partyWiseProduct.GetPartyAsync();
+        //     ViewBag.Products = await _partyWiseProduct.GetProductAsync();
+        //     return View(partyWiseProduct);
+        // }
+        // #endregion
+#region create
+  // GET: partywiseproduct/create
+  [HttpGet("Create")]
+  public async Task<IActionResult> Create()
+  {
+
+      ViewBag.Parties = await _partyWiseProduct.GetPartyAsync();
+      ViewBag.Products = await _partyWiseProduct.GetProductAsync();
+
+      return View();
+  }
+  [HttpPost("Create")]
+  [ValidateAntiForgeryToken]
+  public async Task<IActionResult> Create([Bind("PartyId,ProductId")] PartyWiseProduct partyWiseProduct)
+  {
+      var existingProduct = await _partyWiseProduct.GetPartyWiseProductByName(partyWiseProduct);
+
+      if (existingProduct == true)
+      {     
+          TempData["Error"] = "Product with the same Party already exists.";
+          return RedirectToAction("Index");
+      }
+      if (ModelState.IsValid)
+      {
+          await _partyWiseProduct.AddPartyWiseProductAsync(partyWiseProduct);
+          return RedirectToAction(nameof(Index));
+      }
+
+      ViewBag.Parties = await _partyWiseProduct.GetPartyAsync();
+      ViewBag.Products = await _partyWiseProduct.GetProductAsync();
+      return View(partyWiseProduct);
+  }
+  #endregion
     }
 }
