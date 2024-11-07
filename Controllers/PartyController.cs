@@ -85,7 +85,7 @@ namespace ProductManagemet.Controllers
             {
                 try
                 {
-                    _partyService.UpdatePartyAsync(party);
+                   await _partyService.UpdatePartyAsync(party);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
