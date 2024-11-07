@@ -1,5 +1,11 @@
 ﻿@model IEnumerable<ProductManagemet.Models.PartyWiseProduct>
-
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+        <strong>Sorry!</strong> @TempData["Error"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
 <h1>Party Wise Products</h1>
 <br/>
 <a asp-action="Create" class="btn btn-outline-primary">Add New Product</a>
