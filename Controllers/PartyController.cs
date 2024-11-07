@@ -52,7 +52,7 @@ namespace ProductManagemet.Controllers
         {
             if (ModelState.IsValid)
             {
-               _partyService.AddPartyAsync(party);
+               await _partyService.AddPartyAsync(party);
                 return RedirectToAction(nameof(Index));
             }
             return View(party);
