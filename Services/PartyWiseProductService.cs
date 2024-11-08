@@ -1,7 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using ProductManagemet.Context;
 using ProductManagemet.Models;
 using ProductManagemet.ServiceContracts;
+using System.Web.Mvc;
 using static iText.StyledXmlParser.Jsoup.Select.Evaluator;
 
 namespace ProductManagemet.Services
@@ -18,6 +19,7 @@ namespace ProductManagemet.Services
         #region Add
         public async Task AddPartyWiseProductAsync(PartyWiseProduct partyWiseProduct)
         {
+         
             var product = await _context.Products.FindAsync(partyWiseProduct.ProductId);
 
 
@@ -60,6 +62,12 @@ namespace ProductManagemet.Services
                .Include(pwp => pwp.Party)
                .FirstOrDefaultAsync(m => m.Id == id);
             return partyWiseProduct;
+        }
+
+        public  async Task<bool> GetPartyWiseProductByName(PartyWiseProduct partyWiseProduct)
+        {
+           bool k= await _context.PartyWiseProducts.AnyAsync(p => p.PartyId == partyWiseProduct.PartyId && p.ProductId == partyWiseProduct.ProductId);
+            return k;
         }
 
         public async Task<IEnumerable<Product>> GetProductAsync()
