@@ -1,4 +1,4 @@
-﻿using ProductManagemet.Models;
+using ProductManagemet.Models;
 
 namespace ProductManagemet.ServiceContracts
 {
@@ -13,5 +13,6 @@ namespace ProductManagemet.ServiceContracts
         Task UpdatePartyWiseProductAsync(int id,PartyWiseProduct partyWiseProduct);  
         Task AddPartyWiseProductAsync(PartyWiseProduct partyWiseProduct);
         Task<bool> SearchPartyWiseptoductAsync(int id);   
+        Task<bool> GetPartyWiseProductByName(PartyWiseProduct partyWiseProduct);
     }
 }
